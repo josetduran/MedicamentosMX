@@ -5,14 +5,18 @@ from models.precio import Precio
 
 from providers.base import PriceProvider
 from providers.farmalisto_provider import FarmalistoProvider
+from providers.benavides_provider import BenavidesProvider
+from providers.yza_provider import YzaProvider
 
 
 class ProviderManager:
 
     def __init__(self):
 
-        self.providers: List[PriceProvider] = [
-            FarmalistoProvider()
+        self.providers = [
+            FarmalistoProvider(),
+            BenavidesProvider(),
+            YzaProvider()
         ]
 
     def registrar(self, provider: PriceProvider):

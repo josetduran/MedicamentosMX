@@ -76,6 +76,15 @@ class MainWindow(ctk.CTk):
 
     def iniciar_proceso(self):
 
+        if not self.archivo_excel:
+
+            self.estado.insert(
+                "end",
+                "Seleccione un archivo Excel.\n"
+            )
+
+            return
+
         self.btn_iniciar.configure(state="disabled")
 
         hilo = threading.Thread(
@@ -88,6 +97,7 @@ class MainWindow(ctk.CTk):
     def ejecutar_proceso(self):
 
         self.process_service.ejecutar(
+            self.archivo_excel,
             callback=self.actualizar_progreso
         )
 

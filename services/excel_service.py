@@ -12,9 +12,9 @@ from models.medicamento import Medicamento
 
 class ExcelService:
 
-    def leer_medicamentos(self):
+    def leer_medicamentos(self, archivo_excel):
 
-        df = pd.read_excel(ARCHIVO_ENTRADA)
+        df = pd.read_excel(archivo_excel)
 
         medicamentos = []
 

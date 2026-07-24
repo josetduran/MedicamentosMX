@@ -1,21 +1,16 @@
-# Python
 __pycache__/
-*.py[cod]
-*.pyo
+*.pyc
 
-# Entornos virtuales
 .venv/
 venv/
-env/
 
-# Resultados y datos generados
-resultados/
-logs/
 cache/
 
-# Archivos temporales
+logs/
+
+resultados/
+
+*.log
+
 .DS_Store
 Thumbs.db
-
-# Configuración de VS Code (opcional)
-.vscode/

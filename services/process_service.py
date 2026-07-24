@@ -1,6 +1,7 @@
 from services.excel_service import ExcelService
 from services.search_service import SearchService
 from services.log_service import LogService
+from pathlib import Path
 
 class ProcessService:
 
@@ -9,9 +10,11 @@ class ProcessService:
         self.search = SearchService()
         self.log = LogService()
 
-    def ejecutar(self, callback=None):
+    def ejecutar(self, archivo_excel, callback=None):
+        Path("logs/encontrados.csv").unlink(missing_ok=True)
+        Path("logs/no_encontrados.csv").unlink(missing_ok=True)
 
-        medicamentos = self.excel.leer_medicamentos()
+        medicamentos = self.excel.leer_medicamentos(archivo_excel)
 
         total = len(medicamentos)
 
@@ -41,5 +44,20 @@ class ProcessService:
 
             if callback:
                 callback(indice, total, medicamento)
+            encontrados = 0
 
+            for medicamento in medicamentos:
+
+                if medicamento.precios:
+                    encontrados += 1
+
+            no_encontrados = len(medicamentos) - encontrados
+
+            print()
+            print("=" * 40)
+            print(f"Medicamentos procesados : {len(medicamentos)}")
+            print(f"Encontrados             : {encontrados}")
+            print(f"No encontrados          : {no_encontrados}")
+            print(f"Cobertura               : {encontrados/len(medicamentos):.2%}")
+            print("=" * 40)
         self.excel.exportar(medicamentos)
