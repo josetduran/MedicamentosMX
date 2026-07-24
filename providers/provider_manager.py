@@ -2,15 +2,21 @@ from typing import List
 
 from models.medicamento import Medicamento
 from models.precio import Precio
+
 from providers.base import PriceProvider
+from providers.farmalisto_provider import FarmalistoProvider
 
 
 class ProviderManager:
 
     def __init__(self):
-        self.providers: List[PriceProvider] = []
+
+        self.providers: List[PriceProvider] = [
+            FarmalistoProvider()
+        ]
 
     def registrar(self, provider: PriceProvider):
+
         self.providers.append(provider)
 
     def buscar(self, medicamento: Medicamento) -> List[Precio]:
@@ -21,13 +27,13 @@ class ProviderManager:
 
             try:
 
-                precio = provider.buscar(medicamento)
+                precios = provider.buscar(medicamento)
 
-                if precio is not None:
-                    resultados.append(precio)
+                if precios:
+                    resultados.extend(precios)
 
             except Exception as ex:
 
-                print(f"Error en {provider.__class__.__name__}: {ex}")
+                print(f"Error en {provider.nombre}: {ex}")
 
         return resultados

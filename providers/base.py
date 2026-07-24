@@ -6,7 +6,16 @@ from models.precio import Precio
 
 class PriceProvider(ABC):
 
+    @property
     @abstractmethod
-    def buscar(self, medicamento: Medicamento) -> Precio:
-        """Busca el precio de un medicamento."""
+    def nombre(self) -> str:
+        """Nombre del proveedor."""
+        pass
+
+    @abstractmethod
+    def buscar(
+        self,
+        medicamento: Medicamento
+    ) -> list[Precio]:
+        """Devuelve una lista de precios encontrados."""
         pass
