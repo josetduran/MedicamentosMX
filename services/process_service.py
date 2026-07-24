@@ -1,12 +1,13 @@
 from services.excel_service import ExcelService
 from services.search_service import SearchService
-
+from services.log_service import LogService
 
 class ProcessService:
 
     def __init__(self):
         self.excel = ExcelService()
         self.search = SearchService()
+        self.log = LogService()
 
     def ejecutar(self, callback=None):
 
@@ -19,7 +20,24 @@ class ProcessService:
             precios = self.search.buscar(medicamento)
 
             if precios:
+
                 medicamento.precios.extend(precios)
+
+                for precio in precios:
+
+                    self.log.registrar_encontrado(
+                        medicamento.laboratorio,
+                        medicamento.producto,
+                        precio.proveedor,
+                        precio.precio_promedio,
+                        precio.url
+                    )
+            else:
+                self.log.registrar_no_encontrado(
+                    medicamento.laboratorio,
+                    medicamento.producto,
+                    "Farmalisto"
+                )
 
             if callback:
                 callback(indice, total, medicamento)

@@ -6,6 +6,7 @@ from urllib.parse import quote
 
 from providers.base import PriceProvider
 from models.precio import Precio
+from services.match_service import MatchService
 
 
 class FarmalistoProvider(PriceProvider):
@@ -46,12 +47,20 @@ class FarmalistoProvider(PriceProvider):
         resultados = []
 
         productos = soup.select("article.product-miniature")
+        match = MatchService()
 
         for producto in productos:
 
             titulo = producto.select_one(".product-title a")
 
             nombre = titulo.text.strip()
+            score = match.score(
+            medicamento.producto,
+            nombre
+            )
+
+            if score < 70:
+                continue
 
             if medicamento.producto.upper() not in nombre.upper():
                 continue
@@ -86,4 +95,9 @@ class FarmalistoProvider(PriceProvider):
                 )
             )
 
-        return resultados
+        resultados = match.ordenar(
+            medicamento.producto,
+            resultados
+        )
+
+        return resultados[:3]
