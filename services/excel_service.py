@@ -37,20 +37,36 @@ class ExcelService:
 
         for m in medicamentos:
 
+            if m.precios:
+                primer_precio = m.precios[0]
+
+                presentacion = primer_precio.presentacion
+                fecha_consulta = primer_precio.fecha_consulta.strftime(
+                    "%Y-%m-%d %H:%M"
+                )
+            else:
+                presentacion = ""
+                fecha_consulta = ""
+
             datos.append(
                 [
                     m.laboratorio,
                     m.producto,
-                    m.presentacion,
+                    presentacion,
                     m.precio_minimo,
                     m.precio_maximo,
                     m.precio_promedio,
-                    m.numero_fuentes,
-                    m.fecha_consulta,
+                    len(m.precios),
+                    fecha_consulta,
                 ]
             )
 
-        pd.DataFrame(datos, columns=COLUMNAS_SALIDA).to_excel(
+        df = pd.DataFrame(
+            datos,
+            columns=COLUMNAS_SALIDA,
+        )
+
+        df.to_excel(
             ARCHIVO_SALIDA,
             index=False,
         )

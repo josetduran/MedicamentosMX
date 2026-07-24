@@ -1,19 +1,12 @@
-from services.excel_service import ExcelService
-from utils.logger import logger
+from gui.main_window import MainWindow
+
 
 def main():
 
-    logger.info("Inicio del programa")
+    app = MainWindow()
 
-    excel = ExcelService()
+    app.mainloop()
 
-    medicamentos = excel.leer_medicamentos()
-
-    print(f"Medicamentos encontrados: {len(medicamentos)}")
-
-    excel.exportar(medicamentos)
-
-    logger.info("Archivo exportado correctamente")
 
 if __name__ == "__main__":
     main()
